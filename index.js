@@ -2,10 +2,10 @@ import http from "node:http";
 import fs from "node:fs";
 
 const server = http.createServer((req, res) => {
-  // sets header content type:
+  // set header content type:
   res.setHeader("Content-Type", "text/html");
 
-  // sets path:
+  // set path:
   let path = "";
   switch (req.url) {
     case "/":
@@ -18,6 +18,7 @@ const server = http.createServer((req, res) => {
       path = "./contact-me.html";
       break;
     default:
+      path = "./404.html";
       break;
   }
 
@@ -26,8 +27,10 @@ const server = http.createServer((req, res) => {
       res.statusCode = 500;
       return res.end("Server Error");
     }
-    res.end(data);
+    return res.end(data);
   });
 });
 
-server.listen(8080);
+server.listen(8080, () => {
+  console.log("Server Running on host 8080");
+});
