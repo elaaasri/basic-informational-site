@@ -20,5 +20,8 @@
   "homepage": "https://github.com/elaaasri/basic-informational-site#readme",
   "devDependencies": {
     "nodemon": "^3.1.14"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }

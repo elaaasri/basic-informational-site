@@ -1,36 +1,32 @@
-import http from "node:http";
-import fs from "node:fs";
+import express from "express";
+import { fileURLToPath } from "url";
+import path from "path";
 
-const server = http.createServer((req, res) => {
-  // set header content type:
-  res.setHeader("Content-Type", "text/html");
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const PORT = 8080;
 
-  // set path:
-  let path = "";
-  switch (req.url) {
-    case "/":
-      path = "./index.html";
-      break;
-    case "/about":
-      path = "./about.html";
-      break;
-    case "/contact-me":
-      path = "./contact-me.html";
-      break;
-    default:
-      path = "./404.html";
-      break;
-  }
+const app = express();
 
-  fs.readFile(path, "utf-8", (err, data) => {
-    if (err) {
-      res.statusCode = 500;
-      return res.end("Server Error");
-    }
-    return res.end(data);
-  });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-server.listen(8080, () => {
-  console.log("Server Running on host 8080");
+app.get("/about", (req, res) => {
+  res.sendFile(path.join(__dirname, "about.html"));
+});
+
+app.get("/contact", (req, res) => {
+  res.sendFile(path.join(__dirname, "contact.html"));
+});
+
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "404.html"));
+});
+
+app.listen(PORT, (error) => {
+  if (error) {
+    throw error;
+  }
+  console.log(`Listening on port ${PORT}!`);
 });
