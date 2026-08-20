@@ -1,16 +1,15 @@
-import { getAuthorById } from "../db.js";
+import { findAuthorById } from "../db.js";
+import { CustomNotFoundError } from "../errors/CustomNotFoundError.js";
 
-async function getAuthorByIdController(req, res) {
+async function getAuthorById(req, res) {
   const { authorId } = req.params;
 
-  const author = await getAuthorById(Number(authorId));
-
+  const author = await findAuthorById(Number(authorId));
   if (!author) {
-    res.status(404).send("Author not found");
-    return;
+    throw new CustomNotFoundError("Author not found");
   }
 
   res.send(`Author Name: ${author.name}`);
 }
 
-export { getAuthorByIdController };
+export { getAuthorById };
